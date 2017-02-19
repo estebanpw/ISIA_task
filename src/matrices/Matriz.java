@@ -145,18 +145,26 @@ public class Matriz {
         return suma;
     }
     
+    
+    // Multiples B * A
     public static Matriz multiplicarDosMatrices(Matriz a, Matriz b) throws DimensionesIncompatibles {  
-        if(a.getDimension().width != (b.getDimension().height)) throw new DimensionesIncompatibles("El número de columnas de A debe ser igual al número de filas de B ");
+    	// Width is col length
+    	// Height is row length
+        if(a.getDimension().width != b.getDimension().height) throw new DimensionesIncompatibles("El número de columnas de A debe ser igual al número de filas de B ");
         int i, j, filasA, columnasB, columnasA;
         filasA = a.getDimension().height;
         columnasB = b.getDimension().width;
         columnasA = a.getDimension().width;
+        
+        
         Matriz matrizResultante = new Matriz(filasA, columnasB, false);
+        
         for (i = 0; i < filasA; i++) {
             for (j = 0; j < columnasB; j++) {
                 matrizResultante.datos[i][j] = 0;
                 for (int k = 0; k < columnasA; k++) {
-                    matrizResultante.datos[i][j] += a.datos[i][k] * b.datos[k][j];
+                	
+                    matrizResultante.datos[i][j] += a.datos[k][i] * b.datos[j][k];
                 }
             }
         }

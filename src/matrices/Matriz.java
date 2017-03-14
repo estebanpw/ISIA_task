@@ -37,9 +37,9 @@ public class Matriz {
     public Matriz(int datos[][]){
         this.datos = datos;
     }
-    
+
     public void set_value_at(int i, int j, int value){
-        this.datos[i][j] = value;
+    	this.datos[i][j] = value;
     }
     
     public Matriz(Dimension d, boolean inicializarAleatorio){
@@ -66,6 +66,7 @@ public class Matriz {
 
     public static Matriz matrizInversa(Matriz a) throws DimensionesIncompatibles {
         if(a.getDimension().height != (a.getDimension().width)) throw new DimensionesIncompatibles("La matriz debe ser cuadrada");
+
         
         Matriz transMatriz = new Matriz(a.getDimension().height, a.getDimension().width, false);
         
@@ -171,8 +172,6 @@ public class Matriz {
     // Multiples A %*% B
     public static Matriz multiplicarDosMatrices(Matriz b, Matriz a) throws DimensionesIncompatibles {  
 
-        
-        
         if(b.getDimension().height != a.getDimension().width) throw new DimensionesIncompatibles("El número de columnas de A debe ser igual al número de filas de B ");
         int i, j, filasA, columnasB, columnasA;
         filasA = a.getDimension().height;
@@ -186,7 +185,7 @@ public class Matriz {
             for (j = 0; j < columnasB; j++) {
                 matrizResultante.datos[j][i] = 0;
                 for (int k = 0; k < columnasA; k++) {
-                    
+
                     matrizResultante.datos[j][i] += a.datos[k][i] * b.datos[j][k];
                 }
             }

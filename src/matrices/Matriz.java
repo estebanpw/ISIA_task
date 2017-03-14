@@ -23,13 +23,14 @@ public class Matriz {
             datos[i] = new int[filas];
             if (inicializarAleatorio)
                 for(int j=0; j<filas; j++)
-                    datos[i][j] = rnd.nextInt(100);
+                    datos[i][j] = rnd.nextInt(10);
         }
     }
+
     public Matriz(int datos[][]){
-    	this.datos = datos;
+        this.datos = datos;
     }
-    
+
     public void set_value_at(int i, int j, int value){
     	this.datos[i][j] = value;
     }
@@ -58,22 +59,36 @@ public class Matriz {
 
     public static Matriz matrizInversa(Matriz a) throws DimensionesIncompatibles {
         if(a.getDimension().height != (a.getDimension().width)) throw new DimensionesIncompatibles("La matriz debe ser cuadrada");
-        double det=1/determinante(a);
-        Matriz nmatriz=matrizAdjunta(a);
-        multiplicarMatriz(det,nmatriz);
-        return nmatriz;
+
+        
+        Matriz transMatriz = new Matriz(a.getDimension().height, a.getDimension().width, false);
+        
+        if( determinante(a) != 0 ){
+            double detInverso=1/determinante(a);
+            Matriz adjMatriz=matrizAdjunta(a);
+            transMatriz = matrizTranspuesta(adjMatriz);
+            transMatriz = multiplicarMatriz(detInverso, transMatriz);
+        }
+        
+        return transMatriz;
     }
 
-    public static void multiplicarMatriz(double n, Matriz a) {
+    public static Matriz multiplicarMatriz(double n, Matriz a) {
         int i, j, dimensionA;
         dimensionA=a.getDimension().height;
-        for(i=0;i<dimensionA;i++)
-                for(j=0;j<dimensionA;j++)
-                        a.datos[i][j]*=n;
+        System.out.println("MultiPrincipio"+a.datos[0][0]);
+        for(i=0;i<dimensionA;i++){
+                for(j=0;j<dimensionA;j++){
+                        System.out.println("I: "+i+" J: "+j+" dato1: "+a.datos[i][j]+" n: "+n);
+                        a.datos[i][j]= (int) (a.datos[i][j]*n);
+                }
+        }
+        System.out.println("Multi"+a);
+        return a;
     }
  
     public static Matriz matrizAdjunta(Matriz a){
-        return matrizTranspuesta(matrizCofactores(a));
+        return matrizCofactores(a);
     }
  
     public static Matriz matrizCofactores(Matriz a){
@@ -123,7 +138,7 @@ public class Matriz {
             return det;
         }
         double suma=0;
-        for(i=0; i<dimensionA; i++){
+        for(i=0; i<dimensionA; i++){ 
         Matriz nm = new Matriz(dimensionA-1, dimensionA-1, false);
             for(j=0; j<dimensionA; j++){
                 if(j!=i){
@@ -142,6 +157,7 @@ public class Matriz {
             else
                 suma-=a.datos[i][0] * determinante(nm);
         }
+        System.out.println("det1: "+suma);  
         return suma;
     }
     
@@ -149,8 +165,6 @@ public class Matriz {
     // Multiples A %*% B
     public static Matriz multiplicarDosMatrices(Matriz b, Matriz a) throws DimensionesIncompatibles {  
 
-    	
-    	
         if(b.getDimension().height != a.getDimension().width) throw new DimensionesIncompatibles("El número de columnas de A debe ser igual al número de filas de B ");
         int i, j, filasA, columnasB, columnasA;
         filasA = a.getDimension().height;
@@ -164,7 +178,7 @@ public class Matriz {
             for (j = 0; j < columnasB; j++) {
                 matrizResultante.datos[j][i] = 0;
                 for (int k = 0; k < columnasA; k++) {
-                	
+
                     matrizResultante.datos[j][i] += a.datos[k][i] * b.datos[j][k];
                 }
             }

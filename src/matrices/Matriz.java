@@ -21,19 +21,12 @@ public class Matriz {
         datos = new int[columnas][];
         for(int i=0; i<columnas; i++){
             datos[i] = new int[filas];
-        }
-                for(int i=0; i<columnas; i++){
-            datos[i] = new int[filas];
-            if (inicializarAleatorio){
-                datos[0][0] = 2;
-                datos[0][2] = 1;
-                datos[1][0] = 3;
-                datos[2][0] = 5;
-                datos[2][1] = 1;
-                datos[2][2] = 1; 
-            }
+            if (inicializarAleatorio)
+                for(int j=0; j<filas; j++)
+                    datos[i][j] = rnd.nextInt(10);
         }
     }
+
     public Matriz(int datos[][]){
         this.datos = datos;
     }
